@@ -29,3 +29,21 @@ void display_title_screen() {
 	printf("                         APERTE \"ENTER\" PARA INICIAR                             \n");
 
 }
+
+// displays the main menu
+void display_main_menu() {
+
+printf("## BEM-VINDO AO RESOLVEDOR DE LABIRINTOS ##\n");
+printf("\n");
+printf("\n");
+printf("\n");
+printf("* Escolha um opção:\n");
+printf("   1. Carregar um novo labirinto\n");
+printf("   2. Acessar labirintos já resolvidos\n");
+printf("\n");
+printf("\n");
+printf("\n");
+printf("\n");
+printf("###########################################\n");
+
+}

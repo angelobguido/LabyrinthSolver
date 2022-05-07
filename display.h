@@ -11,5 +11,6 @@
 
 void clear_screen();
 void display_title_screen();
+void display_main_menu();
 
 #endif
