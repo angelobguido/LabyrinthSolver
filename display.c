@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "display.h"
+#include "global_values.h"
 
 // clears the console
 void clear_screen() {
