@@ -5,10 +5,8 @@
 /* this directive is for the compiler to decide the user's operating system in order to use the correct
  * command in the system call contained in the function clear_screen()*/
 #ifndef __unix__
-	//#include <unistd.h>
 	#define IS_WIN 0
 #elif defined(_WIN32) || defined(WIN32)
-	//#include <windows.h>
 	#define IS_WIN 1
 #endif
 
