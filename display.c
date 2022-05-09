@@ -48,3 +48,27 @@ void display_main_menu() {
 	printf("###########################################\n");
 
 }
+
+//displays a txt cointaining a maze
+void display_maze(char* filepath) {}
+
+// displays new maze screen
+void display_new_maze_screen() {
+	printf("####### CARREGAR UM NOVO LABIRINTO ########\n");
+	printf("\n");	
+	printf("\n");	
+	printf(" * Digite o caminho para o arquivo:\n");
+	printf("  ____________________________________\n");
+	
+	char* filepath = load_new_maze();
+
+	printf("  ____________________________________\n");
+	printf("\n");	
+	printf("\n");	
+	printf("\n");	
+	printf("###########################################\n");
+	
+	sleep(2);	
+
+	display_maze(filepath);
+}
