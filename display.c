@@ -72,3 +72,26 @@ void display_new_maze_screen() {
 
 	display_maze(filepath);
 }
+
+// show the name of the maze files that are in the folder
+void enlist_mazes();
+
+void display_maze_list_screen() {
+
+	printf("########## ACESSAR LABIRINTOS JÁ RESOLVIDOS ###########\n");
+	printf("\n");
+	printf("\n");
+
+	enlist_mazes();
+
+	printf("\n");
+	printf("\n");
+	printf("\n");
+	printf("\n");
+	printf("Aperte "j" para descer e "k" para subir a lista.\n"); // implementar
+	printf("Aperte "r" e o número "X" para renomear o labirinto X.\n"); // implementar
+	printf("Aperte "d" e o número "X" para deletar o labirinto X.\n"); // implementar
+	printf("\n");
+	printf("#######################################################\n");
+
+}

@@ -6,5 +6,7 @@ void display_title_screen();
 void display_main_menu();
 void display_maze(char* filepath);
 void display_new_maze_screen();
+void enlist_mazes();
+void display_maze_list_screen();
 
 #endif
