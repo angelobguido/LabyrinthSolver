@@ -11,10 +11,13 @@ void solve_maze(int**matrix, int rows, int columns){
     int flag = find_path(matrix, rows, columns, initial_position, final_position);
 
     if(flag){
-        printf("ACHEI");
+        printf("ACHEI\n");
+        trace_back(matrix, rows, columns, initial_position, final_position);
     }else{
-        printf("NUM ACHEI NAUM");
+        printf("NUM ACHEI NAUM\n");
     }
+
+    clean_map(matrix, rows, columns);
 }
 
 int find_path(int**matrix, int rows, int columns, POSITION initial_position, POSITION final_position){
@@ -83,6 +86,51 @@ void find_position(int**matrix, int rows, int columns, int value, POSITION*posit
                 position->x = j;
                 position->y = i;
                 return;
+            }
+        }
+    }
+}
+
+void trace_back(int**matrix, int rows, int columns, POSITION initial_position, POSITION final_position){
+    int value = matrix[final_position.y][final_position.x];
+    matrix[final_position.y][final_position.x] = 1;
+    _trace_back(matrix, rows, columns, final_position.x+1, final_position.y, value-1);
+    _trace_back(matrix, rows, columns, final_position.x-1, final_position.y, value-1);
+    _trace_back(matrix, rows, columns, final_position.x, final_position.y+1, value-1);
+    _trace_back(matrix, rows, columns, final_position.x, final_position.y-1, value-1);
+}
+
+void _trace_back(int**matrix, int rows, int columns, int position_x, int position_y, int value){
+    if(position_x<0||position_x>=columns||position_y<0||position_y>=rows){
+        return;
+    }
+    if(matrix[position_y][position_x]!=value){
+        return;
+    }
+    if(matrix[position_y][position_x]==1){
+        return;
+    }
+
+    matrix[position_y][position_x] = 1;
+
+    _trace_back(matrix, rows, columns, position_x+1, position_y, value-1);
+    _trace_back(matrix, rows, columns, position_x-1, position_y, value-1);
+    _trace_back(matrix, rows, columns, position_x, position_y+1, value-1);
+    _trace_back(matrix, rows, columns, position_x, position_y-1, value-1);
+}
+
+void clean_map(int**matrix, int rows, int columns){
+    int i, j, value;
+    for(i=0;i<rows;i++){
+        for(j=0;j<columns;j++){
+            value = matrix[i][j];
+            switch(value){
+                case -1: break;
+                case -2: break;
+                case -3: break;
+                case 0: break;
+                case 1: break;
+                default: matrix[i][j] = 0; break;
             }
         }
     }

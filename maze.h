@@ -18,5 +18,10 @@ int find_path(int**matrix, int rows, int columns, POSITION initial_position, POS
 
 void order_positions(POSITION reference_position, POSITION*positions);
 
+void trace_back(int**matrix, int rows, int columns, POSITION initial_position, POSITION final_position);
+
+void _trace_back(int**matrix, int rows, int columns, int position_x, int position_y, int value);
+
+void clean_map(int**matrix, int rows, int columns);
 
 #endif
