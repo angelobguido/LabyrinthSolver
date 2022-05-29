@@ -49,8 +49,39 @@ void display_main_menu() {
 
 }
 
-//displays a txt cointaining a maze
-void display_maze(char* filepath) {}
+//displays a txt on screen cointaining a maze
+void display_maze(char* filepath) {
+	int nrows, ncols, **maze;
+	maze = read_text_file_to_matrix(char* filepath, &nrows, &ncols);
+
+	//  this will loop through the matrix
+	// that is already mapped with only 
+	//-3,-2,-1,0 or 1 flags
+	for(int i=0;i<nrows;i++){
+		for(int j=0;j<ncols;j++){
+			switch(maze[i][j]){
+				case -3: 
+					printf("*");
+					break;
+				case -2: 
+					printf("F");
+					break;
+				case -1: 
+					printf("I");
+					break;
+				case 0: 
+					printf(" ");
+					break;
+				case 1:
+					printf(".");
+					break;
+			}
+		}	
+		printf("\n");	
+	}
+
+	return;
+}
 
 // displays new maze screen
 void display_new_maze_screen() {
