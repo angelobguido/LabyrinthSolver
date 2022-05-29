@@ -28,4 +28,16 @@ void _trace_back(int**matrix, int rows, int columns, int position_x, int positio
 
 void clean_map(int**matrix, int rows, int columns);
 
+int**create_random_maze(int rows, int columns);
+
+void _create_random_maze(int**maze, int rows, int columns, CELL*actual_graph, int*visited_cells, int max_number_of_cells);
+
+int**initialize_maze(int rows, int columns);
+
+POSITION*find_positions(int**maze, int rows, int columns, POSITION actual_position, int*vector_length);
+
+int is_valid_position(int**maze, int rows, int columns, POSITION reference_position);
+
+void destroyWall(int**maze, int rows, int columns, POSITION initial_position, POSITION final_position);
+
 #endif
