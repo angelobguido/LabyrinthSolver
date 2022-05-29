@@ -1,5 +1,8 @@
 #ifndef MAZE_H
 #define MAZE_H
+#include <stdlib.h>
+#include <stdio.h>
+#include <time.h>
 
 #define ABS(x) (((x)>=0)?(x):(-(x)))
 
