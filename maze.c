@@ -35,6 +35,7 @@ void _find_path(int**matrix, int rows, int columns, int initial_position_x, int 
         return;
     }
     if(matrix[initial_position_y][initial_position_x]==-2){
+        matrix[initial_position_y][initial_position_x]=value; // Important to trace back.
         *flag=1;
         return;
     }
