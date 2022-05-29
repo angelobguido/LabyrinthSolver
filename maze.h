@@ -7,6 +7,10 @@ typedef struct{
     int x;
     int y;
 }POSITION;
+typedef struct cell{
+    POSITION graph_position;
+    struct cell* previous_graph;
+}CELL;
 
 void solve_maze(int**matrix, int rows, int columns);
 
