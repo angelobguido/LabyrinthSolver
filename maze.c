@@ -155,17 +155,17 @@ int**create_random_maze(int rows, int columns){
     return maze;
 }
 
-void _create_random_maze(int**maze, int rows, int columns, CELL*actual_graph, int*visited_cells, int max_number_of_cells){
+void _create_random_maze(int**maze, int rows, int columns, CELL*current_node, int*visited_cells, int max_number_of_cells){
     
     if((*visited_cells)==max_number_of_cells){
         return;
     }
-    if(actual_graph==NULL){
+    if(current_node==NULL){
         return;
     }
 
-    int position_x = actual_graph->graph_position.x;
-    int position_y = actual_graph->graph_position.y;
+    int position_x = current_node->graph_position.x;
+    int position_y = current_node->graph_position.y;
 
     if(maze[position_y][position_x]==0){
         maze[position_y][position_x] = -4;
@@ -173,18 +173,18 @@ void _create_random_maze(int**maze, int rows, int columns, CELL*actual_graph, in
     }
 
     int length;
-    POSITION*next_positions = find_positions(maze, rows, columns, actual_graph->graph_position, &length);
+    POSITION*next_positions = find_positions(maze, rows, columns, current_node->graph_position, &length);
     if(length==0){
-        CELL*previous_graph = actual_graph->previous_graph;
-        //free(actual_graph); --> This is an issue (There is memory leak)
+        CELL*previous_graph = current_node->previous_graph;
+        //free(current_node); --> This is an issue (There is memory leak)
         _create_random_maze(maze, rows, columns, previous_graph, visited_cells, max_number_of_cells);
         return;
     }
     POSITION new_position = next_positions[rand()%length];
     free(next_positions);
-    CELL new_graph = {new_position, actual_graph};
+    CELL new_graph = {new_position, current_node};
     CELL*new_graph_pointer = (CELL*)malloc(sizeof(CELL));
-    destroyWall(maze, rows, columns, actual_graph->graph_position, new_position);
+    destroyWall(maze, rows, columns, current_node->graph_position, new_position);
     (*new_graph_pointer) = new_graph;
     _create_random_maze(maze, rows, columns, new_graph_pointer, visited_cells, max_number_of_cells);
     return;
@@ -219,9 +219,12 @@ int**initialize_maze(int rows, int columns){
 
 }
 
-POSITION*find_positions(int**matrix, int rows, int columns, POSITION actual_position, int*vector_length){
-    POSITION top={actual_position.x, actual_position.y-2}, down={actual_position.x, actual_position.y+2}
-    , right={actual_position.x+2, actual_position.y}, left={actual_position.x-2, actual_position.y};
+POSITION*find_positions(int**matrix, int rows, int columns, POSITION current_position, int*vector_length){
+    POSITION top={current_position.x, current_position.y-2}, 
+             down={current_position.x, current_position.y+2},
+             right={current_position.x+2, current_position.y}, 
+             left={current_position.x-2, current_position.y};
+             
     POSITION all_positions_vector[] = {top, down, right, left};
     
     int i;
