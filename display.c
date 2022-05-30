@@ -61,7 +61,7 @@ void display_maze(char* filepath) {
 		for(int j=0;j<ncols;j++){
 			switch(maze[i][j]){
 				case -3: 
-					printf("*");
+					printf("#");
 					break;
 				case -2: 
 					printf("F");
