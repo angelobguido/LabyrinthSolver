@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <dirent.h>
 #include "file_routines.h"
 #include "global_values.h"
 
@@ -62,7 +63,7 @@ void remove_file(int index) {
 		system("mkdir mazes");
 	}
 
-	// reads and prints the name of the files in the folder
+	// searches for the file and then deletes it
 	while ((entry = readdir(folder))) {
 		dir_index++;
 		if (!strcmp(entry->d_name, ".") || !strcmp(entry->d_name, ".."))
@@ -79,6 +80,7 @@ void remove_file(int index) {
 	// error handling -- bad index
 	if (dir_index == 0) {
 		printf("Could not find file with this index.\n");
+		closedir(folder);
 		return;
 	}
 
@@ -99,9 +101,51 @@ void sys_rename_file(char* filepath, char* new_name) {
 	system(strcat(strcat(strcat(command, filepath), divider), new_name));
 }
 
-int** read_text_file_to_matrix(char* filepath, int*rows, int*columns){
-	int**matrix = NULL;
-	int x=0, y=0;
+void rename_file(int index, char* new_name) {
+	DIR *folder;
+	struct dirent *entry;
+	int dir_index = 0;
+
+	while(1) {
+		// tries to open the directory
+		if (IS_WIN)
+			folder = opendir(".\\mazes");
+		else
+			folder = opendir("./mazes");
+		// if directory doesn't exist, creates it
+		if (folder != NULL)
+			break;
+		system("mkdir mazes");
+	}
+
+	// searches for the file and then renames it 
+	while ((entry = readdir(folder))) {
+		dir_index++;
+		if (!strcmp(entry->d_name, ".") || !strcmp(entry->d_name, ".."))
+			dir_index--;
+
+		if (dir_index == index) {
+			if (IS_WIN)
+				sys_rename_file(strcat(".\\mazes\\", entry -> d_name), new_name);
+			else
+				sys_rename_file(strcat("/mazes/", entry -> d_name), new_name);
+		}
+	}
+	
+	// error handling -- bad index
+	if (dir_index == 0) {
+		printf("Could not find file with this index.\n");
+		closedir(folder);
+		return;
+	}
+
+	closedir(folder);
+	
+}
+
+int** read_text_file_to_matrix(char* filepath, int* rows, int* columns){
+	int** matrix = NULL;
+	int x = 0, y = 0;
 	int i, j;
 	int max_columns = 0;
 	int max_rows = 1;
@@ -185,19 +229,19 @@ char* load_new_maze() {
 		for(int j = 0; j < ncols; j++){
 			switch(maze[i][j]){
 				case -3: 
-					fprintf(file, '#');
+					fprintf(file, "#");
 					break;
 				case -2: 
-					fprintf(file, 'F');
+					fprintf(file, "F");
 					break;
 				case -1: 
-					fprintf(file, 'I');
+					fprintf(file, "I");
 					break;
 				case 0: 
-					fprintf(file, ' ');
+					fprintf(file, " ");
 					break;
 				case 1:
-					fprintf(file, '.');
+					fprintf(file, ".");
 					break;
 			}
 		}	
