@@ -45,6 +45,46 @@ void sys_remove_file(char* filepath) {
 	system(strcat(command, filepath));
 }
 
+void remove_file(int index) {
+	DIR *folder;
+	struct dirent *entry;
+	int dir_index = 0;
+
+	while(1) {
+		// tries to open the directory
+		if (IS_WIN)
+			folder = opendir(".\\mazes");
+		else
+			folder = opendir("./mazes");
+		// if directory doesn't exist, creates it
+		if (folder != NULL)
+			break;
+		system("mkdir mazes");
+	}
+
+	// reads and prints the name of the files in the folder
+	while ((entry = readdir(folder))) {
+		dir_index++;
+		if (!strcmp(entry->d_name, ".") || !strcmp(entry->d_name, ".."))
+			dir_index--;
+
+		if (dir_index == index) {
+			if (IS_WIN)
+				sys_remove_file(strcat(".\\mazes\\", entry -> d_name));
+			else
+				sys_remove_file(strcat("/mazes/", entry -> d_name));
+		}
+	}
+	
+	// error handling -- bad index
+	if (dir_index == 0) {
+		printf("Could not find file with this index.\n");
+		return;
+	}
+
+	closedir(folder);
+}
+
 void sys_rename_file(char* filepath, char* new_name) {
 	char* command = new_string();
 	char win_cmd[] = "REN ";
