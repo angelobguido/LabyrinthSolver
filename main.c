@@ -3,8 +3,8 @@
 #include "global_values.h"
 
 int main() {
-	clear_screen();
-	display_title_screen();
+	
+	enlist_mazes();
 
 	return 0;
 }
