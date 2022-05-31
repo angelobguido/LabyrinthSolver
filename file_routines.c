@@ -145,19 +145,19 @@ char* load_new_maze() {
 		for(int j = 0; j < ncols; j++){
 			switch(maze[i][j]){
 				case -3: 
-					fprintf(file, "#");
+					fprintf(file, '#');
 					break;
 				case -2: 
-					fprintf(file, "F");
+					fprintf(file, 'F');
 					break;
 				case -1: 
-					fprintf(file, "I");
+					fprintf(file, 'I');
 					break;
 				case 0: 
-					fprintf(file, " ");
+					fprintf(file, ' ');
 					break;
 				case 1:
-					fprintf(file, ".");
+					fprintf(file, '.');
 					break;
 			}
 		}	
