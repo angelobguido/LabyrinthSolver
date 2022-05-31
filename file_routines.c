@@ -8,6 +8,30 @@ char* new_string() {
 	return (char*)calloc(STRSIZE, sizeof(char));
 }
 
+char* get_filename(char* filepath) {
+	char* filename = new_string();
+	int slashes = 0, i, j, last_index;
+
+	// counts how many slashes there are in the string
+	for (i = 0; filepath[i] != '\0'; i++) {
+		if (IS_WIN) {
+			if (filepath[i] == 92)
+				last_index = i;
+		}
+		else {
+			if (filepath[i] == 47)
+				last_index = i;
+		}
+	}
+
+	// copies file's name to filename
+	j = 0;
+	for (i = last_index; filepath[i-1] != '\0'; i++)
+		filename[j++] = filepath[i];
+
+	return filename;
+}
+
 void sys_remove_file(char* filepath) {
 	char* command = new_string();
 	char win_cmd[] = "DEL ";
@@ -93,6 +117,54 @@ int** read_text_file_to_matrix(char* filepath, int*rows, int*columns){
  * the maze is saved in ./mazes folder already processed with the correct chars ;
  * returns the filepath to the new loaded maze */
 char* load_new_maze() {
-	char* template = NULL;
-	return template;
+	int nrows, ncols, **maze;
+	char *path = new_string();
+	char *filepath = new_string();
+
+	scanf("%s", filepath);
+
+	char *filename = get_filename(filepath);
+	if (IS_WIN)
+		path = strcat(".\\mazes\\",filename);
+	else
+		path = strcat("/mazes/",filename);
+	
+	// opens new file to be saved
+	FILE *file = fopen(path, "w");
+	if (file == NULL) {
+		printf("Could not load file");
+		return NULL;
+	}
+
+	maze = read_text_file_to_matrix(filepath, &nrows, &ncols);
+
+	//  this will loop through the matrix
+	// that is already mapped with only 
+	//-3,-2,-1,0 or 1 flags
+	for(int i = 0; i < nrows; i++){
+		for(int j = 0; j < ncols; j++){
+			switch(maze[i][j]){
+				case -3: 
+					fprintf(file, "#");
+					break;
+				case -2: 
+					fprintf(file, "F");
+					break;
+				case -1: 
+					fprintf(file, "I");
+					break;
+				case 0: 
+					fprintf(file, " ");
+					break;
+				case 1:
+					fprintf(file, ".");
+					break;
+			}
+		}	
+		fprintf(file, "\n");	
+	}
+
+	fclose(file);
+
+	return path;
 }
