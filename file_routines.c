@@ -90,5 +90,6 @@ int** read_text_file_to_matrix(char* filepath, int*rows, int*columns){
 }
 
 /* function used to get new mazes in the option 'carregar novo labirinto' ;
+ * the maze is saved in ./mazes folder already processed with the correct chars ;
  * returns the filepath to the new loaded maze */
 char* load_new_maze() {}
