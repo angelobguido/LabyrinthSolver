@@ -5,6 +5,8 @@
 #include "global_values.h"
 
 int main() {
+	int choice;
+
 	// displays theme screen until 'ENTER' key is pressed
 	clear_screen();
 	display_title_screen();
@@ -19,7 +21,6 @@ int main() {
 	display_main_menu();
 
 	// waits for user to select a function
-	int choice;
 	while (choice != 1 && choice != 2)
 		scanf("%d", &choice);
 	if (choice == 1)
