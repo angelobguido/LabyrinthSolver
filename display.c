@@ -109,6 +109,7 @@ void display_new_maze_screen() {
 		system("sleep(2)");
 
 	display_maze(filepath);
+	printf("\n\t\tAperte ENTER para voltar ao menu principal\n");
 }
 
 // show the name of the maze files that are in the folder
