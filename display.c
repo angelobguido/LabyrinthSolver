@@ -104,9 +104,9 @@ void display_new_maze_screen() {
 	printf("###########################################\n");
 	
 	if (IS_WIN)
-		system("Sleep(2000)");
+		system("Sleep(2)");
 	else
-		system("sleep(2)");
+		system("sleep 2");
 
 	display_maze(filepath);
 	printf("\n\t\tAperte ENTER para voltar ao menu principal\n");
