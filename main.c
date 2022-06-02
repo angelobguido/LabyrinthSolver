@@ -32,11 +32,16 @@ int main() {
 	new_maze:
 	clear_screen();
 	display_new_maze_screen();
+	// waits for user to press the 'ENTER' key to return to the main menu
+	while (getchar() != '\n');
+	goto main_menu;
 
 	/* LOAD MAZE ENVIRONMENT */
 	load_maze:
 	clear_screen();
 	display_maze_list_screen();
+	// maze selection
+	goto main_menu;
 
 	return 0;
 }
