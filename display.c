@@ -93,7 +93,8 @@ void display_new_maze_screen() {
 	printf("\n");	
 	printf(" * Digite o caminho para o arquivo:\n");
 	printf("  ____________________________________\n");
-	
+	printf("  ");
+
 	char* filepath = load_new_maze();
 
 	printf("  ____________________________________\n");
