@@ -5,7 +5,7 @@
 #include "global_values.h"
 
 int main() {
-	int choice;
+	int choice=0;
 
 	// displays theme screen until 'ENTER' key is pressed
 	clear_screen();
@@ -17,6 +17,7 @@ int main() {
 	
 	/* MAIN MENU ENVIRONMENT */
 	main_menu:
+	choice=0;
 	clear_screen();
 	display_main_menu();
 
@@ -41,7 +42,9 @@ int main() {
 	load_maze:
 	clear_screen();
 	display_maze_list_screen();
-	// maze selection
+	while(getchar() != 'M'){
+
+	}
 	goto main_menu;
 
 	return 0;

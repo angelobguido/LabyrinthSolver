@@ -6,6 +6,7 @@
 #include "file_routines.h"
 #include "global_values.h"
 
+
 // clears the console
 void clear_screen() {
 	if (IS_WIN)
@@ -159,6 +160,8 @@ void display_maze_list_screen() {
 	printf("Aperte \"r\" e o número \"X\" para renomear o labirinto X.\n"); // implementar
 	printf("Aperte \"d\" e o número \"X\" para deletar o labirinto X.\n"); // implementar
 	printf("\n");
+	printf("\n");
+	printf("Aperte \"M\" para retornar ao menu principal\n");
+	printf("\n");
 	printf("#######################################################\n");
-
 }
