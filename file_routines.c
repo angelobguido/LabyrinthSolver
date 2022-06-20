@@ -1,11 +1,36 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <dirent.h>
 #include "file_routines.h"
 #include "global_values.h"
 
 char* new_string() {
 	return (char*)calloc(STRSIZE, sizeof(char));
+}
+
+char* get_filename(char* filepath) {
+	char* filename = new_string();
+	int slashes = 0, i, j, last_index;
+
+	// counts how many slashes there are in the string
+	for (i = 0; filepath[i] != '\0'; i++) {
+		if (IS_WIN) {
+			if (filepath[i] == 92)
+				last_index = i;
+		}
+		else {
+			if (filepath[i] == 47)
+				last_index = i;
+		}
+	}
+
+	// copies file's name to filename
+	j = 0;
+	for (i = last_index; filepath[i-1] != '\0'; i++)
+		filename[j++] = filepath[i];
+
+	return filename;
 }
 
 void sys_remove_file(char* filepath) {
@@ -19,6 +44,47 @@ void sys_remove_file(char* filepath) {
 		strcpy(command, unix_cmd);
 	
 	system(strcat(command, filepath));
+}
+
+void remove_file(int index) {
+	DIR *folder;
+	struct dirent *entry;
+	int dir_index = 0;
+
+	while(1) {
+		// tries to open the directory
+		if (IS_WIN)
+			folder = opendir(".\\mazes");
+		else
+			folder = opendir("./mazes");
+		// if directory doesn't exist, creates it
+		if (folder != NULL)
+			break;
+		system("mkdir mazes");
+	}
+
+	// searches for the file and then deletes it
+	while ((entry = readdir(folder))) {
+		dir_index++;
+		if (!strcmp(entry->d_name, ".") || !strcmp(entry->d_name, ".."))
+			dir_index--;
+
+		if (dir_index == index) {
+			if (IS_WIN)
+				sys_remove_file(strcat(".\\mazes\\", entry -> d_name));
+			else
+				sys_remove_file(strcat("/mazes/", entry -> d_name));
+		}
+	}
+	
+	// error handling -- bad index
+	if (dir_index == 0) {
+		printf("Could not find file with this index.\n");
+		closedir(folder);
+		return;
+	}
+
+	closedir(folder);
 }
 
 void sys_rename_file(char* filepath, char* new_name) {
@@ -35,9 +101,51 @@ void sys_rename_file(char* filepath, char* new_name) {
 	system(strcat(strcat(strcat(command, filepath), divider), new_name));
 }
 
-int** read_text_file_to_matrix(char* filepath, int*rows, int*columns){
-	int**matrix = NULL;
-	int x=0, y=0;
+void rename_file(int index, char* new_name) {
+	DIR *folder;
+	struct dirent *entry;
+	int dir_index = 0;
+
+	while(1) {
+		// tries to open the directory
+		if (IS_WIN)
+			folder = opendir(".\\mazes");
+		else
+			folder = opendir("./mazes");
+		// if directory doesn't exist, creates it
+		if (folder != NULL)
+			break;
+		system("mkdir mazes");
+	}
+
+	// searches for the file and then renames it 
+	while ((entry = readdir(folder))) {
+		dir_index++;
+		if (!strcmp(entry->d_name, ".") || !strcmp(entry->d_name, ".."))
+			dir_index--;
+
+		if (dir_index == index) {
+			if (IS_WIN)
+				sys_rename_file(strcat(".\\mazes\\", entry -> d_name), new_name);
+			else
+				sys_rename_file(strcat("/mazes/", entry -> d_name), new_name);
+		}
+	}
+	
+	// error handling -- bad index
+	if (dir_index == 0) {
+		printf("Could not find file with this index.\n");
+		closedir(folder);
+		return;
+	}
+
+	closedir(folder);
+	
+}
+
+int** read_text_file_to_matrix(char* filepath, int* rows, int* columns){
+	int** matrix = NULL;
+	int x = 0, y = 0;
 	int i, j;
 	int max_columns = 0;
 	int max_rows = 1;
@@ -90,5 +198,57 @@ int** read_text_file_to_matrix(char* filepath, int*rows, int*columns){
 }
 
 /* function used to get new mazes in the option 'carregar novo labirinto' ;
+ * the maze is saved in ./mazes folder already processed with the correct chars ;
  * returns the filepath to the new loaded maze */
-char* load_new_maze() {}
+char* load_new_maze() {
+	int nrows, ncols, **maze;
+	char *path = new_string();
+	char *filepath = new_string();
+
+	scanf("%s", filepath);
+
+	char *filename = get_filename(filepath);
+	if (IS_WIN)
+		path = strcat(".\\mazes\\",filename);
+	else
+		path = strcat("/mazes/",filename);
+	
+	// opens new file to be saved
+	FILE *file = fopen(path, "w");
+	if (file == NULL) {
+		printf("Could not load file");
+		return NULL;
+	}
+
+	maze = read_text_file_to_matrix(filepath, &nrows, &ncols);
+
+	//  this will loop through the matrix
+	// that is already mapped with only 
+	//-3,-2,-1,0 or 1 flags
+	for(int i = 0; i < nrows; i++){
+		for(int j = 0; j < ncols; j++){
+			switch(maze[i][j]){
+				case -3: 
+					fprintf(file, "#");
+					break;
+				case -2: 
+					fprintf(file, "F");
+					break;
+				case -1: 
+					fprintf(file, "I");
+					break;
+				case 0: 
+					fprintf(file, " ");
+					break;
+				case 1:
+					fprintf(file, ".");
+					break;
+			}
+		}	
+		fprintf(file, "\n");	
+	}
+
+	fclose(file);
+
+	return path;
+}

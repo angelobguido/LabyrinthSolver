@@ -1,6 +1,6 @@
 CC = gcc
 MAIN = main.c
-AUXFILES = display.c file_routines.c
+AUXFILES = maze.c display.c file_routines.c
 EXECNAME = resolvedor_de_labirintos
 
 target:

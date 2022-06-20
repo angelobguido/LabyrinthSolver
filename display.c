@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <dirent.h>
 #include "display.h"
+#include "file_routines.h"
 #include "global_values.h"
 
 // clears the console
@@ -52,7 +55,7 @@ void display_main_menu() {
 //displays a txt on screen cointaining a maze
 void display_maze(char* filepath) {
 	int nrows, ncols, **maze;
-	maze = read_text_file_to_matrix(char* filepath, &nrows, &ncols);
+	maze = read_text_file_to_matrix(filepath, &nrows, &ncols);
 
 	//  this will loop through the matrix
 	// that is already mapped with only 
@@ -90,7 +93,8 @@ void display_new_maze_screen() {
 	printf("\n");	
 	printf(" * Digite o caminho para o arquivo:\n");
 	printf("  ____________________________________\n");
-	
+	printf("  ");
+
 	char* filepath = load_new_maze();
 
 	printf("  ____________________________________\n");
@@ -99,13 +103,45 @@ void display_new_maze_screen() {
 	printf("\n");	
 	printf("###########################################\n");
 	
-	sleep(2);	
+	if (IS_WIN)
+		system("Sleep(2)");
+	else
+		system("sleep 2");
 
 	display_maze(filepath);
+	printf("\n\t\tAperte ENTER para voltar ao menu principal\n");
 }
 
 // show the name of the maze files that are in the folder
-void enlist_mazes();
+void enlist_mazes() {
+	DIR *folder;
+	struct dirent *entry;
+	int n_files = 0;
+
+	while(1) {
+		// tries to open the directory
+		if (IS_WIN)
+			folder = opendir(".\\mazes");
+		else
+			folder = opendir("./mazes");
+		// if directory doesn't exist, creates it
+		if (folder != NULL)
+			break;
+		system("mkdir mazes");
+	}
+
+	// reads and prints the name of the files in the folder
+	while ((entry = readdir(folder))) {
+		n_files++;
+		if (!strcmp(entry->d_name, ".") || !strcmp(entry->d_name, "..")) {
+			n_files--;
+			continue;
+		}
+		printf("%d: %s\n", n_files, entry->d_name);
+	}
+
+	closedir(folder);
+}
 
 void display_maze_list_screen() {
 
@@ -119,9 +155,9 @@ void display_maze_list_screen() {
 	printf("\n");
 	printf("\n");
 	printf("\n");
-	printf("Aperte "j" para descer e "k" para subir a lista.\n"); // implementar
-	printf("Aperte "r" e o número "X" para renomear o labirinto X.\n"); // implementar
-	printf("Aperte "d" e o número "X" para deletar o labirinto X.\n"); // implementar
+	printf("Aperte \"j\" para descer e \"k\" para subir a lista.\n"); // implementar
+	printf("Aperte \"r\" e o número \"X\" para renomear o labirinto X.\n"); // implementar
+	printf("Aperte \"d\" e o número \"X\" para deletar o labirinto X.\n"); // implementar
 	printf("\n");
 	printf("#######################################################\n");
 
