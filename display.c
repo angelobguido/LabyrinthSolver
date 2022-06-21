@@ -119,6 +119,7 @@ void enlist_mazes() {
 	struct dirent *entry;
 	int n_files = 0;
 
+
 	while(1) {
 		// tries to open the directory
 		if (IS_WIN)

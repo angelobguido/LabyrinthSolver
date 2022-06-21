@@ -7,6 +7,7 @@
 int main() {
 	int choice=0,fileIndex=0;
 	char ch, *newName;
+	newName = new_string();
 
 	// displays theme screen until 'ENTER' key is pressed
 	clear_screen();

@@ -5,6 +5,20 @@
 #include "file_routines.h"
 #include "global_values.h"
 
+char auxDirWIN[] = ".\\mazes\\";
+char auxDirUNIX[] = "./mazes/";
+
+void rmvDotsPath(char* path){
+	int flag = strlen(path);
+
+	for(int i =strlen(path) - 1;i>=0;i--){
+		if(path[i] == '.'){
+			flag--;
+		}
+	}
+	path[flag] = '\0';
+}
+
 char* new_string() {
 	return (char*)calloc(STRSIZE, sizeof(char));
 }
@@ -71,9 +85,9 @@ void remove_file(int index) {
 
 		if (dir_index == index) {
 			if (IS_WIN)
-				sys_remove_file(strcat(".\\mazes\\", entry -> d_name));
+				sys_remove_file(strcat(auxDirWIN, entry -> d_name));
 			else
-				sys_remove_file(strcat("/mazes/", entry -> d_name));
+				sys_remove_file(strcat(auxDirUNIX, entry -> d_name));
 		}
 	}
 	
@@ -104,7 +118,11 @@ void sys_rename_file(char* filepath, char* new_name) {
 void rename_file(int index, char* new_name) {
 	DIR *folder;
 	struct dirent *entry;
+	char* sysCall;
 	int dir_index = 0;
+
+	sysCall = new_string();
+	
 
 	while(1) {
 		// tries to open the directory
@@ -120,15 +138,20 @@ void rename_file(int index, char* new_name) {
 
 	// searches for the file and then renames it 
 	while ((entry = readdir(folder))) {
-		dir_index++;
+		dir_index++; 
 		if (!strcmp(entry->d_name, ".") || !strcmp(entry->d_name, ".."))
 			dir_index--;
 
 		if (dir_index == index) {
-			if (IS_WIN)
-				sys_rename_file(strcat(".\\mazes\\", entry -> d_name), new_name);
-			else
-				sys_rename_file(strcat("/mazes/", entry -> d_name), new_name);
+			printf("\nEntry string that will be concatenated:\n%s\nEOS\n", entry -> d_name);
+			if (IS_WIN){
+			sysCall = strcat(auxDirWIN, entry -> d_name);
+			}else{
+			sysCall = strcat(auxDirUNIX, entry -> d_name);
+			}
+				
+			rmvDotsPath(sysCall);	
+			sys_rename_file(sysCall, new_name);
 		}
 	}
 	
@@ -209,9 +232,9 @@ char* load_new_maze() {
 
 	char *filename = get_filename(filepath);
 	if (IS_WIN)
-		path = strcat(".\\mazes\\",filename);
+		path = strcat(auxDirWIN,filename);
 	else
-		path = strcat("/mazes/",filename);
+		path = strcat(auxDirUNIX,filename);
 	
 	// opens new file to be saved
 	FILE *file = fopen(path, "w");
