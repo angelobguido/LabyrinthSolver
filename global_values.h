@@ -5,7 +5,7 @@
  * command in the system calls contained in the functions throughout the code*/
 #ifndef __unix__
 	#define IS_WIN 0
-#elif defined(_WIN32) || defined(WIN32)
+#elif _WIN32 || _WIN64
 	#define IS_WIN 1
 #endif
 
