@@ -63,7 +63,7 @@ int main() {
 				localFlag = 1;
 				break;
 		}
-	}while(ch != 'M' && !localFlag);
+	}	while(ch != 'M' && !localFlag);
 	goto main_menu;
 
 	return 0;

@@ -43,20 +43,28 @@ void sys_remove_file(char* filepath) {
 	else
 		strcpy(command, unix_cmd);
 	
-	system(strcat(command, filepath));
+	strcat(command, filepath);
+	system(command);
+
+	free(command);
 }
 
 void remove_file(int index) {
 	DIR *folder;
 	struct dirent *entry;
 	int dir_index = 0;
+	char *filepath = new_string();
 
 	while(1) {
 		// tries to open the directory
-		if (IS_WIN)
+		if (IS_WIN) {
 			folder = opendir(".\\mazes");
-		else
+			strcpy(filepath, ".\\mazes\\");
+		} 
+		else {
 			folder = opendir("./mazes");
+			strcpy(filepath, "./mazes/");
+		}
 		// if directory doesn't exist, creates it
 		if (folder != NULL)
 			break;
@@ -70,10 +78,8 @@ void remove_file(int index) {
 			dir_index--;
 
 		if (dir_index == index) {
-			if (IS_WIN)
-				sys_remove_file(strcat(".\\mazes\\", entry -> d_name));
-			else
-				sys_remove_file(strcat("/mazes/", entry -> d_name));
+			strcat(filepath, entry -> d_name);
+			sys_remove_file(filepath);
 		}
 	}
 	
@@ -84,6 +90,7 @@ void remove_file(int index) {
 		return;
 	}
 
+	free(filepath);
 	closedir(folder);
 }
 
@@ -98,20 +105,30 @@ void sys_rename_file(char* filepath, char* new_name) {
 	else
 		strcpy(command, unix_cmd);
 	
-	system(strcat(strcat(strcat(command, filepath), divider), new_name));
+	strcat(command, filepath);
+	strcat(command, divider);
+	strcat(command, new_name);
+	system(command);
+
+	free(command);
 }
 
 void rename_file(int index, char* new_name) {
 	DIR *folder;
 	struct dirent *entry;
 	int dir_index = 0;
+	char *filepath = new_string();
 
 	while(1) {
 		// tries to open the directory
-		if (IS_WIN)
+		if (IS_WIN) {
 			folder = opendir(".\\mazes");
-		else
+			strcpy(filepath, ".\\mazes\\");
+		}
+		else {
 			folder = opendir("./mazes");
+			strcpy(filepath, "./mazes/");
+		}
 		// if directory doesn't exist, creates it
 		if (folder != NULL)
 			break;
@@ -125,10 +142,8 @@ void rename_file(int index, char* new_name) {
 			dir_index--;
 
 		if (dir_index == index) {
-			if (IS_WIN)
-				sys_rename_file(strcat(".\\mazes\\", entry -> d_name), new_name);
-			else
-				sys_rename_file(strcat("/mazes/", entry -> d_name), new_name);
+			strcat(filepath, entry -> d_name);
+			sys_rename_file(filepath, new_name);
 		}
 	}
 	
@@ -139,8 +154,8 @@ void rename_file(int index, char* new_name) {
 		return;
 	}
 
-	closedir(folder);
-	
+	free(filepath);
+	closedir(folder);	
 }
 
 int** read_text_file_to_matrix(char* filepath, int* rows, int* columns){
