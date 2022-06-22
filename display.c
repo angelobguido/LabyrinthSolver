@@ -109,8 +109,15 @@ void display_new_maze_screen() {
 	else
 		system("sleep 2");
 
+	printf("\nExibindo o labirinto a ser resolvido:\n");
 	display_maze(filepath);
-	printf("\n\t\tAperte ENTER para voltar ao menu principal\n");
+	// the next 3 lines are still to be implemented
+	// printf("\nExibindo o labirinto resolvido:\n");
+	// solve_mazeFromfile(filepath);
+	// display_maze(filepath);
+	do{
+		printf("\n\t\tAperte ENTER para voltar ao menu principal\n");
+	}while(getchar() != '\n');
 }
 
 // show the name of the maze files that are in the folder

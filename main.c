@@ -34,7 +34,9 @@ int main() {
 	/* NEW MAZE ENVIRONMENT */
 	new_maze:
 	clear_screen();
-	display_new_maze_screen();
+	display_new_maze_screen(); // this function maybe does too much things(input etc, it is not just a display function)
+	// read the end of file_routines.c to see the dillema that implies on our structure, since this is printing only the
+	// unsolved version of the maze
 	// waits for user to press the 'ENTER' key to return to the main menu
 	while (getchar() != '\n');
 	goto main_menu;
