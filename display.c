@@ -8,7 +8,7 @@
 
 
 // clears the console
-void clear_screen() {
+void clear_screen(){
 	if (IS_WIN)
 		system("cls");
 	else
@@ -16,7 +16,7 @@ void clear_screen() {
 }
 
 // displays the title screen
-void display_title_screen() {
+void display_title_screen(){
 
 	printf("    ____  _____ ____   ___  _ __     _______ ____   ___  ____    ____  _____    \n");
 	printf("   |  _ \\| ____/ ___| / _ \\| |\\ \\   / / ____|  _ \\ / _ \\|  _ \\  |  _ \\| ____|   \n");
@@ -87,37 +87,22 @@ void display_maze(char* filepath) {
 	return;
 }
 
-// displays new maze screen
-void display_new_maze_screen() {
+// displays new maze screen before and after scanf of filepath
+void display_new_maze_screenStart() {
 	printf("####### CARREGAR UM NOVO LABIRINTO ########\n");
 	printf("\n");	
 	printf("\n");	
 	printf(" * Digite o caminho para o arquivo:\n");
 	printf("  ____________________________________\n");
 	printf("  ");
-
-	char* filepath = load_new_maze();
+}
+void display_new_maze_screenEnd(){
 
 	printf("  ____________________________________\n");
 	printf("\n");	
 	printf("\n");	
 	printf("\n");	
 	printf("###########################################\n");
-	
-	if (IS_WIN)
-		system("Sleep(2)");
-	else
-		system("sleep 2");
-
-	printf("\nExibindo o labirinto a ser resolvido:\n");
-	display_maze(filepath);
-	// the next 3 lines are still to be implemented
-	// printf("\nExibindo o labirinto resolvido:\n");
-	// solve_mazeFromfile(filepath);
-	// display_maze(filepath);
-	do{
-		printf("\n\t\tAperte ENTER para voltar ao menu principal\n");
-	}while(getchar() != '\n');
 }
 
 // show the name of the maze files that are in the folder
@@ -171,4 +156,31 @@ void display_maze_list_screen() {
 	printf("Aperte \"M\" para retornar ao menu principal\n");
 	printf("\n");
 	printf("#######################################################\n");
+}
+
+void display_maze_from_matrix(int**maze,int nrows,int ncols){
+
+	for(int i=0;i<nrows;i++){
+		for(int j=0;j<ncols;j++){
+			switch(maze[i][j]){
+				case -3: 
+					printf("#");
+					break;
+				case -2: 
+					printf("F");
+					break;
+				case -1: 
+					printf("I");
+					break;
+				case 0: 
+					printf(" ");
+					break;
+				case 1:
+					printf(".");
+					break;
+			}
+		}	
+		printf("\n");	
+	}
+
 }

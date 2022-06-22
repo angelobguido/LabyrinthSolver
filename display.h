@@ -5,8 +5,10 @@ void clear_screen();
 void display_title_screen();
 void display_main_menu();
 void display_maze(char* filepath);
-void display_new_maze_screen();
+void display_new_maze_screenStart();
+void display_new_maze_screenEnd();
 void enlist_mazes();
 void display_maze_list_screen();
+void display_maze_from_matrix(int **maze,int nrows,int ncols);
 
 #endif

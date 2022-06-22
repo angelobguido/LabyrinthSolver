@@ -10,5 +10,5 @@ void rename_file(int index, char* new_name);
 int** read_text_file_to_matrix(char* filepath, int*rows, int*columns);
 char* load_new_maze();
 char *get_path_from_index(int fileIndex);
-void solvemazeFromfile(char* filepath);
+int** solve_mazeFromfile(char* filepath,int*,int*);
 #endif

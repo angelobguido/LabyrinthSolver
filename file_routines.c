@@ -4,6 +4,7 @@
 #include <dirent.h>
 #include "file_routines.h"
 #include "global_values.h"
+#include "maze.h"
 
 char* new_string() {
 	return (char*)calloc(STRSIZE, sizeof(char));
@@ -337,12 +338,11 @@ char *get_path_from_index(int fileIndex){
 // if it does, the main will have to save or call some function to save it
 // if it does not(seems to make more sense), we need to implement more UI so that the user gives a path to create a file
 // creating files may be tricky and we need to get this right, so i didnt finish this funciton yet
-/*
-int **solve_mazeFromfile(filepath){
-	int **maze, lines, columns;
-	maze = read_text_file_to_matrix(filepath,&lines,&columns);
-	solve_maze(maze);
+
+int **solve_mazeFromfile(char * pathOriginalMaze, int* lines, int*columns){
+	int **maze;
+	maze = read_text_file_to_matrix(pathOriginalMaze,lines,columns);
+	solve_maze(maze,*lines,*columns);
 	
 	return maze;
 }
-*/

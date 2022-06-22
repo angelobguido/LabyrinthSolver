@@ -5,8 +5,9 @@
 #include "global_values.h"
 
 int main() {
-	int choice=0,fileIndex=0,localFlag = 0;;
-	char ch, *newName,*pathToOpen = new_string();
+	int choice=0,fileIndex=0,localFlag = 0;
+	char ch, *newName,*pathToOpen = new_string(), *newMazePath = new_string();
+	int **newMaze, newMazeCols, newMazeRows;
 
 	// displays theme screen until 'ENTER' key is pressed
 	clear_screen();
@@ -34,17 +35,37 @@ int main() {
 	/* NEW MAZE ENVIRONMENT */
 	new_maze:
 	clear_screen();
-	display_new_maze_screen(); // this function maybe does too much things(input etc, it is not just a display function)
-	// read the end of file_routines.c to see the dillema that implies on our structure, since this is printing only the
-	// unsolved version of the maze
+	display_new_maze_screenStart(); 
+	newMazePath = load_new_maze();
+	display_new_maze_screenEnd();
+
+	if (IS_WIN)
+		system("Sleep(2)");
+	else
+		system("sleep 2");
+
+
+	printf("\nExibindo o labirinto a ser resolvido:\n");
+	display_maze(newMazePath);
+
+	newMaze = solve_mazeFromfile(newMazePath,&newMazeRows,&newMazeCols);
+
+	printf("\nExibindo o labirinto resolvido:\n");
+	display_maze_from_matrix(newMaze, newMazeRows, newMazeCols);
+	getchar();
 	// waits for user to press the 'ENTER' key to return to the main menu
-	while (getchar() != '\n');
+	do{
+		printf("\n\t\tAperte ENTER para voltar ao menu principal\n");
+	}while(getchar() != '\n');
+
 	goto main_menu;
 
 	/* LOAD MAZE ENVIRONMENT */
 	load_maze:
 	clear_screen();
 	display_maze_list_screen();
+	fileIndex =0;
+	pathToOpen = NULL;
 
 	ch = 0;
 	do{
