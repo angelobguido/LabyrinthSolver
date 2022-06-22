@@ -52,7 +52,10 @@ int main() {
 
 	printf("\nExibindo o labirinto resolvido:\n");
 	display_maze_from_matrix(newMaze, newMazeRows, newMazeCols);
-	getchar();
+	getchar(); // this getchar stops the program from going back to main_menu (?)
+
+	// IMPLEMENT OPTION TO SAVE RESULT ON FILE
+	
 	// waits for user to press the 'ENTER' key to return to the main menu
 	do{
 		printf("\n\t\tAperte ENTER para voltar ao menu principal\n");

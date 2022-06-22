@@ -11,10 +11,10 @@ void solve_maze(int**matrix, int rows, int columns){
     int flag = find_path(matrix, rows, columns, initial_position, final_position);
 
     if(flag){
-        printf("ACHEI\n");
+        //printf("ACHEI\n");
         trace_back(matrix, rows, columns, initial_position, final_position);
     }else{
-        printf("NUM ACHEI NAUM\n");
+        //printf("NUM ACHEI NAUM\n");
     }
 
     clean_map(matrix, rows, columns);
