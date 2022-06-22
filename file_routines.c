@@ -223,13 +223,17 @@ char* load_new_maze() {
 	scanf("%s", filepath);
 
 	char *filename = get_filename(filepath);
-	if (IS_WIN)
-		path = strcat(".\\mazes\\",filename);
-	else
-		path = strcat("/mazes/",filename);
-	
+	if (IS_WIN){
+		strcpy(path,".\\mazes\\");
+		strcat(path,filename);
+	}
+	else{
+		strcpy(path,"./mazes");
+		strcat(path,filename);
+	}
+		
 	// opens new file to be saved
-	FILE *file = fopen(path, "w");
+	FILE *file = fopen(path, "r");
 	if (file == NULL) {
 		printf("Could not load file");
 		return NULL;
@@ -264,6 +268,40 @@ char* load_new_maze() {
 	}
 
 	fclose(file);
+	free(filepath);
 
 	return path;
+}
+
+char *get_path_from_index(int fileIndex){
+	DIR *folder;
+	struct dirent *entry;
+	int dir_index = 0,i_files=0;
+	char *filepath = new_string();
+
+	while(1) {
+		// tries to open the directory
+		if (IS_WIN) {
+			folder = opendir(".\\mazes");
+			strcpy(filepath, ".\\mazes\\");
+		}
+		else {
+			folder = opendir("./mazes");
+			strcpy(filepath, "./mazes/");
+		}
+		// if directory doesn't exist, creates it
+		if (folder != NULL)
+			break;
+		system("mkdir mazes");
+	}
+
+	while ((entry = readdir(folder))) {
+		if(i_files == fileIndex){
+			strcat(filepath, entry ->d_name);
+			break;
+		}
+		i_files++;
+	}
+
+	return filepath;
 }

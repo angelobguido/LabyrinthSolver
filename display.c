@@ -156,6 +156,7 @@ void display_maze_list_screen() {
 	printf("\n");
 	printf("\n");
 	printf("\n");
+	printf("Aperte \"o\" e o número \"X\" para abrir o labirinto X.\n");
 	printf("Aperte \"r\" e o número \"X\" para renomear o labirinto X.\n"); // implementar
 	printf("Aperte \"d\" e o número \"X\" para deletar o labirinto X.\n"); // implementar
 	printf("\n");

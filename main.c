@@ -5,8 +5,8 @@
 #include "global_values.h"
 
 int main() {
-	int choice=0,fileIndex=0;
-	char ch, *newName;
+	int choice=0,fileIndex=0,localFlag = 0;;
+	char ch, *newName,*pathToOpen = new_string();
 
 	// displays theme screen until 'ENTER' key is pressed
 	clear_screen();
@@ -43,12 +43,17 @@ int main() {
 	load_maze:
 	clear_screen();
 	display_maze_list_screen();
-	int localFlag = 0;
 
 	ch = 0;
 	do{
 		ch = getchar();
 		switch(ch){
+			case 'o':
+				scanf("%d", &fileIndex);
+				pathToOpen = get_path_from_index(fileIndex);
+				printf("\nExibindo o labirinto %d de path %s\n",fileIndex, pathToOpen );
+				display_maze(pathToOpen);
+				break;
 			case 'r':
 				scanf("%d", &fileIndex);
 				printf("Digite o nome para o qual o arquivo deve ser renomeado\n");
