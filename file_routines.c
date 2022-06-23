@@ -319,11 +319,18 @@ char *get_path_from_index(int fileIndex){
 	}
 
 	while ((entry = readdir(folder))) {
+		i_files++;
+		//printf("\non first if on iteration %d with entry->d_name \n%s", i_files,entry->d_name);
+		if(entry->d_name[0] == '.'){
+			i_files--;
+			continue;
+		}
+		//printf("\noff first if on iteration %d with entry->d_name \n%s", i_files,entry->d_name);
 		if(i_files == fileIndex){
 			strcat(filepath, entry ->d_name);
 			break;
 		}
-		i_files++;
+		
 	}
 
 	return filepath;
