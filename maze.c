@@ -152,6 +152,9 @@ int**create_random_maze(int rows, int columns){
     _create_random_maze(maze, rows, columns, &root, &visited_cells, max_number_of_cells);
 
     clean_map(maze, rows, columns);
+    maze[0][0] = -1;
+    maze[(rows%2==0)?(rows-2):(rows-1)][(columns%2==0)?(columns-2):(columns-1)] = -2;
+    
     return maze;
 }
 
