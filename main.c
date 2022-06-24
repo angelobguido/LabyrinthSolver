@@ -9,6 +9,9 @@ int main() {
 	char ch, *newName,*pathToOpen = new_string(), *newMazePath = new_string();
 	int **newMaze, newMazeCols, newMazeRows;
 
+	int **new_randomMaze, randomMazeCols, randomMazeRows;
+	char *new_randomMaze_Name = new_string();
+
 	// displays theme screen until 'ENTER' key is pressed
 	clear_screen();
 	display_title_screen();
@@ -24,12 +27,14 @@ int main() {
 	display_main_menu();
 
 	// waits for user to select a function
-	while (choice != 1 && choice != 2)
+	while (choice != 1 && choice != 2 && choice != 3) 
 		scanf("%d", &choice);
 	if (choice == 1)
 		goto new_maze;
-	else
+	else if (choice == 2)
 		goto load_maze;
+	else if (choice == 3)
+		goto gen_maze;
 
 
 	/* NEW MAZE ENVIRONMENT */
@@ -96,6 +101,43 @@ int main() {
 		}
 	}	while(ch != 'M' && !localFlag);
 	goto main_menu;
+
+
+	/* GENERERATE RANDOM MAZE ENVIROMENT */
+
+	gen_maze:
+	clear_screen();
+
+	printf("Digite o nome do arquivo do seu novo labirinto no formato <nome.txt>: "); //Defines random maze name
+	
+	scanf("%s", new_randomMaze_Name);
+
+	printf("\n");
+	clear_screen();
+
+	display_rand_maze_gen_size_selection(); //Define random maze size
+
+	printf("N° de linhas: ");
+	scanf("%d", &randomMazeRows);
+
+	printf("N° de colunas: ");
+	scanf("%d", &randomMazeCols);
+
+	clear_screen();
+
+	new_randomMaze = random_maze(randomMazeRows, randomMazeCols); //Creates random maze
+
+	create_random_maze_file(new_randomMaze_Name, randomMazeRows, randomMazeCols);//saves maze in txt
+	display_loading_screen();
+	clear_screen();
+
+
+
+	printf("\nO labirinto gerado foi:\n");
+	printf("\n");
+
+	display_maze_from_matrix(new_randomMaze, randomMazeRows, randomMazeCols);//prints maze
+
 
 	return 0;
 }

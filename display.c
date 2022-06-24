@@ -45,6 +45,7 @@ void display_main_menu() {
 	printf("* Escolha um opção:\n");
 	printf("   1. Carregar um novo labirinto\n");
 	printf("   2. Acessar labirintos já resolvidos\n");
+	printf("   3. Gerar um labirinto aleatório\n");
 	printf("\n");
 	printf("\n");
 	printf("\n");
@@ -182,5 +183,61 @@ void display_maze_from_matrix(int**maze,int nrows,int ncols){
 		}	
 		printf("\n");	
 	}
+
+}
+
+void display_rand_maze_gen_size_selection(){
+
+	printf("############## GERAR LABIRINTO ALEATÓRIO ##############\n");
+	printf("\n");
+	printf("\n");
+
+	printf("Digite o número de linhas e colunas do labirinto a ser gerado:\n");
+
+	printf("\n");
+	printf("\n");
+
+}
+
+void display_loading_screen(){
+
+	printf("############## CARREGANDO O LABIRINTO... ##############\n");
+	if (IS_WIN)
+		system("Sleep(0.8)");
+	else
+		system("sleep 0.8");
+
+	printf("██ 39%%\n");
+	if (IS_WIN)
+		system("Sleep(0.8)");
+	else
+		system("sleep 0.8");
+
+	printf("███ 49%% \n");
+	if (IS_WIN)
+		system("Sleep(0.8)");
+	else
+		system("sleep 0.8");
+
+	printf("████ 76%% \n");
+	if (IS_WIN)
+		system("Sleep(0.8)");
+	else
+		system("sleep 0.8");
+
+	printf("█████ 89%% \n");
+	if (IS_WIN)
+		system("Sleep(0.8)");
+	else
+		system("sleep 0.8");
+
+	printf("██████ 100%% \n");
+	if (IS_WIN)
+		system("Sleep(0.8)");
+	else
+		system("sleep 0.8");
+		
+	printf("\n");
+	printf("################## LABIRINTO PRONTO ! ##################\n");
 
 }

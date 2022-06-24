@@ -353,3 +353,78 @@ int **solve_mazeFromfile(char * pathOriginalMaze, int* lines, int*columns){
 	
 	return maze;
 }
+
+
+//Takes care of file routines within random maze creation
+int** random_maze(int randomMazeRows, int randomMazeCols){
+
+	int** randomMaze;
+
+	randomMaze = create_random_maze(randomMazeRows, randomMazeCols);//Creates the random maze
+
+	return randomMaze;
+}
+
+
+void create_random_maze_file(char* filename, int randomMazeRows, int randomMazeCols){
+	DIR *folder;
+	FILE *maze;
+	char *path = new_string();
+
+	int **new_randomMaze = create_random_maze(randomMazeRows, randomMazeCols);//creates random maze
+
+	while(1) {
+		// tries to open the directory
+		if (IS_WIN) {
+			folder = opendir(".\\mazes");
+		}
+		else {
+			folder = opendir("./mazes");
+		}
+		// if directory doesn't exist, creates it
+		if (folder != NULL)
+			break;
+		system("mazes");
+	}
+
+	if (IS_WIN){
+		strcpy(path,".\\mazes\\");
+		strcat(path,filename);
+	}
+	else{
+		strcpy(path,"./mazes/");
+		strcat(path,filename);
+	}
+
+	maze = fopen(path, "w");//creates new random maze file
+
+	if(maze == NULL){
+        // File not created hence exit 
+        printf("Unable to create file.\n");
+	}
+
+	for(int i = 0; i < randomMazeRows; i++){//prints maze in .txt file
+		for(int j = 0; j < randomMazeCols; j++){
+			switch(new_randomMaze[i][j]){
+				case -3: 
+					fprintf(maze, "-3");
+					break;
+				case -2: 
+					fprintf(maze, "-2");
+					break;
+				case -1: 
+					fprintf(maze, "-1");
+					break;
+				case 0: 
+					fprintf(maze, "0");
+					break;
+				case 1:
+					fprintf(maze, "1");
+					break;
+			}
+		}	
+		fprintf(maze, "\n");	
+	}
+
+
+}
