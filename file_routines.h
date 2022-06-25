@@ -12,6 +12,6 @@ char* load_new_maze();
 char *get_path_from_index(int fileIndex);
 int** solve_mazeFromfile(char* filepath,int*,int*);
 int** random_maze(int randomMazeRows, int randomMazeCols);
-void create_random_maze_file(char* filename, int randomMazeRows, int randomMazeCols);
+void create_gen_maze_file(char* filename, int**genMaze,  int genMazeRows, int genMazeCols);
 
 #endif

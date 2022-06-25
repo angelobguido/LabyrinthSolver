@@ -168,7 +168,11 @@ int** read_text_file_to_matrix(char* filepath, int* rows, int* columns){
 	char ch;
 	//printf("\n Trying to open the file inside read text function\n");
 	FILE* ptr = fopen(filepath, "r");
-	//printf("\nFile opened\n");
+	if(ptr==NULL){
+		printf("Não foi possível ler o arquivo");
+		return NULL;
+	}
+	//printf("\nFile opened %p\n", ptr);
 	matrix = (int**)malloc(sizeof(int*));
 
 	while(max_columns = (max_columns>x)?(max_columns):(x),(ch=fgetc(ptr))!=EOF){
@@ -220,7 +224,7 @@ int** read_text_file_to_matrix(char* filepath, int* rows, int* columns){
 	*rows = max_rows;
 
     fclose(ptr);
-	
+
 	return matrix;
 }
 
@@ -247,7 +251,7 @@ char* load_new_maze() {
 	}
 	//printf("\nTrying to open the full path %s\n",path);
 	// opens new file to be saved
-	FILE *file = fopen(path, "r");
+	FILE *file = fopen(path, "w");
 	if (file == NULL) {
 		printf("Could not load file");
 		return NULL;
@@ -255,13 +259,13 @@ char* load_new_maze() {
 
 	//printf("\nTrying to read text file to matrix with path %s\n", filepath);
 	maze = read_text_file_to_matrix(filepath, &nrows, &ncols);
-	//printf("\nWe got this matrix for the maze:\n");
-	//for(int i=0;i<nrows;i++){
-	//	for(int j=0;j<ncols;j++){
-	//		printf("%d ", maze[i][j]);
-	//	}
-	//	printf("\n");
-	//}
+	// printf("\nWe got this matrix for the maze:\n");
+	// for(int i=0;i<nrows;i++){
+	// 	for(int j=0;j<ncols;j++){
+	// 		printf("%d ", maze[i][j]);
+	// 	}
+	// 	printf("\n");
+	// }
 
 
 	//  this will loop through the matrix
@@ -366,65 +370,61 @@ int** random_maze(int randomMazeRows, int randomMazeCols){
 }
 
 
-void create_random_maze_file(char* filename, int randomMazeRows, int randomMazeCols){
+void create_gen_maze_file(char* filename, int**genMaze,  int genMazeRows, int genMazeCols){
 	DIR *folder;
 	FILE *maze;
 	char *path = new_string();
-
-	int **new_randomMaze = create_random_maze(randomMazeRows, randomMazeCols);//creates random maze
-
+	
 	while(1) {
 		// tries to open the directory
 		if (IS_WIN) {
-			folder = opendir(".\\mazes");
+			folder = opendir(".\\gen_mazes");
 		}
 		else {
-			folder = opendir("./mazes");
+			folder = opendir("./gen_mazes");
 		}
 		// if directory doesn't exist, creates it
 		if (folder != NULL)
 			break;
-		system("mazes");
+		system("mkdir gen_mazes");
 	}
 
 	if (IS_WIN){
-		strcpy(path,".\\mazes\\");
+		strcpy(path,".\\gen_mazes\\");
 		strcat(path,filename);
 	}
 	else{
-		strcpy(path,"./mazes/");
+		strcpy(path,"./gen_mazes/");
 		strcat(path,filename);
 	}
 
-	maze = fopen(path, "w");//creates new random maze file
+	maze = fopen(path, "w");//creates new gen maze file
 
 	if(maze == NULL){
         // File not created hence exit 
         printf("Unable to create file.\n");
 	}
 
-	for(int i = 0; i < randomMazeRows; i++){//prints maze in .txt file
-		for(int j = 0; j < randomMazeCols; j++){
-			switch(new_randomMaze[i][j]){
+	for(int i = 0; i < genMazeRows; i++){//prints maze in .txt file
+		for(int j = 0; j < genMazeCols; j++){
+			switch(genMaze[i][j]){
 				case -3: 
-					fprintf(maze, "-3");
+					fprintf(maze, "#");
 					break;
 				case -2: 
-					fprintf(maze, "-2");
+					fprintf(maze, "F");
 					break;
 				case -1: 
-					fprintf(maze, "-1");
+					fprintf(maze, "I");
 					break;
 				case 0: 
-					fprintf(maze, "0");
-					break;
-				case 1:
-					fprintf(maze, "1");
+					fprintf(maze, " ");
 					break;
 			}
 		}	
 		fprintf(maze, "\n");	
 	}
+	fclose(maze);
 
 
 }

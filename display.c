@@ -46,6 +46,7 @@ void display_main_menu() {
 	printf("   1. Carregar um novo labirinto\n");
 	printf("   2. Acessar labirintos já resolvidos\n");
 	printf("   3. Gerar um labirinto aleatório\n");
+	printf("   4. Sair\n");
 	printf("\n");
 	printf("\n");
 	printf("\n");
@@ -58,7 +59,6 @@ void display_main_menu() {
 void display_maze(char* filepath) {
 	int nrows, ncols, **maze;
 	maze = read_text_file_to_matrix(filepath, &nrows, &ncols);
-
 	//  this will loop through the matrix
 	// that is already mapped with only 
 	//-3,-2,-1,0 or 1 flags
@@ -196,37 +196,55 @@ void display_loading_screen(){
 		system("Sleep(0.8)");
 	else
 		system("sleep 0.8");
-
-	printf("██ 39%%\n");
+	
+	clear_screen();
+	printf("############## CARREGANDO O LABIRINTO... ##############\n");
+	printf("█████ 18%%\n");
 	if (IS_WIN)
 		system("Sleep(0.8)");
 	else
 		system("sleep 0.8");
 
-	printf("███ 49%% \n");
+	clear_screen();
+	printf("############## CARREGANDO O LABIRINTO... ##############\n");
+	printf("██████████████████████ 39%%\n");
 	if (IS_WIN)
 		system("Sleep(0.8)");
 	else
 		system("sleep 0.8");
 
-	printf("████ 76%% \n");
+	clear_screen();
+	printf("############## CARREGANDO O LABIRINTO... ##############\n");
+	printf("████████████████████████████████ 49%% \n");
 	if (IS_WIN)
 		system("Sleep(0.8)");
 	else
 		system("sleep 0.8");
 
-	printf("█████ 89%% \n");
+	clear_screen();
+	printf("############## CARREGANDO O LABIRINTO... ##############\n");
+	printf("████████████████████████████████████████████ 76%% \n");
 	if (IS_WIN)
 		system("Sleep(0.8)");
 	else
 		system("sleep 0.8");
 
-	printf("██████ 100%% \n");
+	clear_screen();
+	printf("############## CARREGANDO O LABIRINTO... ##############\n");
+	printf("███████████████████████████████████████████████ 89%% \n");
 	if (IS_WIN)
 		system("Sleep(0.8)");
 	else
 		system("sleep 0.8");
-		
+
+	clear_screen();
+	printf("############## CARREGANDO O LABIRINTO... ##############\n");
+	printf("███████████████████████████████████████████████████████ 100%% \n");
+	if (IS_WIN)
+		system("Sleep(0.8)");
+	else
+		system("sleep 0.8");
+
 	printf("\n");
 	printf("################## LABIRINTO PRONTO ! ##################\n");
 
