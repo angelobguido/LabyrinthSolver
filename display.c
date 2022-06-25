@@ -65,21 +65,11 @@ void display_maze(char* filepath) {
 	for(int i=0;i<nrows;i++){
 		for(int j=0;j<ncols;j++){
 			switch(maze[i][j]){
-				case -3: 
-					printf("#");
-					break;
-				case -2: 
-					printf("F");
-					break;
-				case -1: 
-					printf("I");
-					break;
-				case 0: 
-					printf(" ");
-					break;
-				case 1:
-					printf(".");
-					break;
+				case 1: printf("%c ", '.'); break;
+                case -1: printf("%c ", 'I'); break;
+                case -2: printf("%c ", 'F'); break;
+                case 0: printf("%c ", ' '); break;
+                case -3: printf("%c ", '#'); break;
 			}
 		}	
 		printf("\n");	
@@ -165,19 +155,19 @@ void display_maze_from_matrix(int**maze,int nrows,int ncols){
 		for(int j=0;j<ncols;j++){
 			switch(maze[i][j]){
 				case -3: 
-					printf("#");
+					printf("# ");
 					break;
 				case -2: 
-					printf("F");
+					printf("F ");
 					break;
 				case -1: 
-					printf("I");
+					printf("I ");
 					break;
 				case 0: 
-					printf(" ");
+					printf("  ");
 					break;
 				case 1:
-					printf(".");
+					printf(". ");
 					break;
 			}
 		}	
