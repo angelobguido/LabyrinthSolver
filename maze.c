@@ -94,30 +94,33 @@ void find_position(int**matrix, int rows, int columns, int value, POSITION*posit
 
 void trace_back(int**matrix, int rows, int columns, POSITION initial_position, POSITION final_position){
     int value = matrix[final_position.y][final_position.x];
-    matrix[final_position.y][final_position.x] = 1;
-    _trace_back(matrix, rows, columns, final_position.x+1, final_position.y, value-1);
-    _trace_back(matrix, rows, columns, final_position.x-1, final_position.y, value-1);
-    _trace_back(matrix, rows, columns, final_position.x, final_position.y+1, value-1);
-    _trace_back(matrix, rows, columns, final_position.x, final_position.y-1, value-1);
+    int flag = 0;
+    matrix[final_position.y][final_position.x] = -2;
+    _trace_back(matrix, rows, columns, final_position.x+1, final_position.y, value-1, &flag);
+    _trace_back(matrix, rows, columns, final_position.x-1, final_position.y, value-1, &flag);
+    _trace_back(matrix, rows, columns, final_position.x, final_position.y+1, value-1, &flag);
+    _trace_back(matrix, rows, columns, final_position.x, final_position.y-1, value-1, &flag);
 }
 
-void _trace_back(int**matrix, int rows, int columns, int position_x, int position_y, int value){
+void _trace_back(int**matrix, int rows, int columns, int position_x, int position_y, int value, int*flag){
     if(position_x<0||position_x>=columns||position_y<0||position_y>=rows){
         return;
     }
     if(matrix[position_y][position_x]!=value){
         return;
     }
-    if(matrix[position_y][position_x]==1){
+    if(matrix[position_y][position_x]==1&&(*flag)!=0){
+        (*flag) = 1;
+        matrix[position_y][position_x]=-1;
         return;
     }
 
     matrix[position_y][position_x] = 1;
 
-    _trace_back(matrix, rows, columns, position_x+1, position_y, value-1);
-    _trace_back(matrix, rows, columns, position_x-1, position_y, value-1);
-    _trace_back(matrix, rows, columns, position_x, position_y+1, value-1);
-    _trace_back(matrix, rows, columns, position_x, position_y-1, value-1);
+    _trace_back(matrix, rows, columns, position_x+1, position_y, value-1, flag);
+    _trace_back(matrix, rows, columns, position_x-1, position_y, value-1, flag);
+    _trace_back(matrix, rows, columns, position_x, position_y+1, value-1, flag);
+    _trace_back(matrix, rows, columns, position_x, position_y-1, value-1, flag);
 }
 
 void clean_map(int**matrix, int rows, int columns){
@@ -131,6 +134,7 @@ void clean_map(int**matrix, int rows, int columns){
                 case -3: break;
                 case 0: break;
                 case 1: break;
+                case 2: matrix[i][j] = 1; break;
                 default: matrix[i][j] = 0; break;
             }
         }

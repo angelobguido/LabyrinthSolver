@@ -27,7 +27,7 @@ void order_positions(POSITION reference_position, POSITION*positions);
 
 void trace_back(int**matrix, int rows, int columns, POSITION initial_position, POSITION final_position);
 
-void _trace_back(int**matrix, int rows, int columns, int position_x, int position_y, int value);
+void _trace_back(int**matrix, int rows, int columns, int position_x, int position_y, int value, int*flag);
 
 void clean_map(int**matrix, int rows, int columns);
 
