@@ -235,6 +235,7 @@ char* load_new_maze() {
 	int nrows, ncols, **maze;
 	char *path = new_string();
 	char *filepath = new_string();
+	DIR* folder;
 
 	scanf("%s", filepath);
 	//printf("\nTrying to get the name of the filepath %s\n", filepath);
@@ -248,6 +249,20 @@ char* load_new_maze() {
 	else{
 		strcpy(path,"./mazes");
 		strcat(path,filename);
+	}
+
+	while(1) {
+		// tries to open the directory
+		if (IS_WIN) {
+			folder = opendir(".\\mazes");
+		}
+		else {
+			folder = opendir("./mazes");
+		}
+		// if directory doesn't exist, creates it
+		if (folder != NULL)
+			break;
+		system("mkdir mazes");
 	}
 	//printf("\nTrying to open the full path %s\n",path);
 	// opens new file to be saved
