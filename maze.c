@@ -109,13 +109,13 @@ void _trace_back(int**matrix, int rows, int columns, int position_x, int positio
     if(matrix[position_y][position_x]!=value){
         return;
     }
-    if(matrix[position_y][position_x]==1&&(*flag)!=0){
+    if(matrix[position_y][position_x]==1&&(*flag)!=1){
         (*flag) = 1;
         matrix[position_y][position_x]=-1;
         return;
     }
 
-    matrix[position_y][position_x] = 1;
+    matrix[position_y][position_x] = 2;
 
     _trace_back(matrix, rows, columns, position_x+1, position_y, value-1, flag);
     _trace_back(matrix, rows, columns, position_x-1, position_y, value-1, flag);

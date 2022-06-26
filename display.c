@@ -59,6 +59,7 @@ void display_main_menu() {
 void display_maze(char* filepath) {
 	int nrows, ncols, **maze;
 	maze = read_text_file_to_matrix(filepath, &nrows, &ncols);
+	
 	//  this will loop through the matrix
 	// that is already mapped with only 
 	//-3,-2,-1,0 or 1 flags
@@ -74,6 +75,27 @@ void display_maze(char* filepath) {
 		}	
 		printf("\n");	
 	}
+
+	free_matrix(maze, nrows);
+	return;
+}
+
+void display_solved_maze(char* filepath){
+	FILE* ptr = fopen(filepath, "r");
+	char ch;
+	if(ptr==NULL){
+		printf("Can't open the file");
+		exit(1);
+	}
+	while((ch=fgetc(ptr))!=EOF){
+		if(ch!='\n'){
+			printf("%c ", ch);
+		}else{
+			printf("%c", ch);
+		}
+	}
+
+	fclose(ptr);
 
 	return;
 }

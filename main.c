@@ -48,13 +48,14 @@ int main() {
 				display_maze_from_matrix(newMaze, newMazeRows, newMazeCols);
 				getchar(); // this getchar stops the program from going back to main_menu (?)
 
-				// IMPLEMENT OPTION TO SAVE RESULT ON FILE
+				// Solve maze from file already saves the result in it
 				
 				// waits for user to press the 'ENTER' key to return to the main menu
 				do{
 					printf("\n\t\tAperte ENTER para voltar ao menu principal\n");
 				}while(getchar() != '\n');
-
+				
+				free_matrix(newMaze, newMazeRows);
 				free(newMazePath);
 			} break;
 
@@ -76,7 +77,11 @@ int main() {
 							scanf("%d", &fileIndex);
 							pathToOpen = get_path_from_index(fileIndex);
 							printf("\nExibindo o labirinto %d de path %s\n",fileIndex, pathToOpen );
-							display_maze(pathToOpen);
+							display_solved_maze(pathToOpen);
+							getchar();
+							do{
+								printf("\n\t\tAperte ENTER para voltar\n");
+							}while(getchar() != '\n');
 							break;
 						case 'r':
 							scanf("%d", &fileIndex);

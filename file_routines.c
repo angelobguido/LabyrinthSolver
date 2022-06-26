@@ -119,6 +119,7 @@ void rename_file(int index, char* new_name) {
 	struct dirent *entry;
 	int dir_index = 0;
 	char *filepath = new_string();
+	char *filepathOld = new_string();
 
 	while(1) {
 		// tries to open the directory
@@ -143,8 +144,10 @@ void rename_file(int index, char* new_name) {
 			dir_index--;
 
 		if (dir_index == index) {
-			strcat(filepath, entry -> d_name);
-			sys_rename_file(filepath, new_name);
+			strcpy(filepathOld,filepath);
+			strcat(filepathOld, entry -> d_name);
+			strcat(filepath, new_name);
+			sys_rename_file(filepathOld, filepath);
 		}
 	}
 	
@@ -156,74 +159,71 @@ void rename_file(int index, char* new_name) {
 	}
 
 	free(filepath);
+	free(filepathOld);
 	closedir(folder);	
 }
 
 int** read_text_file_to_matrix(char* filepath, int* rows, int* columns){
-	int** matrix = NULL;
-	int x = 0, y = 0;
+	int**matrix = NULL;
+	int x=0, y=0;
 	int i, j;
 	int max_columns = 0;
 	int max_rows = 1;
 	char ch;
-	//printf("\n Trying to open the file inside read text function\n");
 	FILE* ptr = fopen(filepath, "r");
-	if(ptr==NULL){
-		printf("Não foi possível ler o arquivo");
-		return NULL;
-	}
-	//printf("\nFile opened %p\n", ptr);
-	matrix = (int**)malloc(sizeof(int*));
 
-	while(max_columns = (max_columns>x)?(max_columns):(x),(ch=fgetc(ptr))!=EOF){
-		//printf("\nIn the biggest loop\n");
-		switch(ch){
-			case 'I': matrix[y] = (int*)realloc(matrix[y], sizeof(int)*(x+1));
-					  //printf("\nJust realloced smth inside case I\n");
-					  matrix[y][x] = -1;
-					  x++;
-					  break;
-			case 'F': matrix[y] = (int*)realloc(matrix[y], sizeof(int)*(x+1));
-					  //printf("\nJust realloced smth inside case F\n");
-					  matrix[y][x] = -2;
-					  x++;
-					  break;
-			case ' ': matrix[y] = (int*)realloc(matrix[y], sizeof(int)*(x+1));
-					  //printf("\nJust realloced smth inside case SPACE\n");
-					  matrix[y][x] = 0;
-					  x++;
-					  break;
-			case '\n':y++;
-					  max_rows = y+1;
-					  matrix = (int**)realloc(matrix, sizeof(int*)*max_rows);
-					  //printf("\nJUst realloced smth inside case ENTER\n");
-					  x = 0;
-					  break;
-			default:  matrix[y] = (int*)realloc(matrix[y], sizeof(int)*(x+1));
-					  matrix[y][x] = -3;
-					  //printf("\nJUst realloced smth inside default\n");
-					  x++;
-					  break;
+	matrix = (int**)malloc(sizeof(int*));
+	matrix[0] = NULL;
+
+	while(max_columns = (max_columns>x) ? (max_columns) : (x), (ch=fgetc(ptr))!=EOF ) {
+		switch(ch) {
+		case 'I':
+			matrix[y] = (int*)realloc(matrix[y], sizeof(int)*(x+1));
+			matrix[y][x] = -1;
+			// printf("%c ", 'I');
+			x++;
+			break;
+		case 'F':
+			matrix[y] = (int*)realloc(matrix[y], sizeof(int)*(x+1));
+			matrix[y][x] = -2;
+			// printf("%c ", 'F');
+			x++;
+			break;
+		case ' ':
+			matrix[y] = (int*)realloc(matrix[y], sizeof(int)*(x+1));
+			matrix[y][x] = 0;
+			// printf("%c ", ' ');
+			x++;
+			break;
+		case '\n':y++;
+			max_rows = y+1;
+			matrix = (int**)realloc(matrix, sizeof(int*)*max_rows);
+			matrix[y] = NULL;
+			// printf("%c", '\n');
+			x = 0;
+			break;
+		default:
+			matrix[y] = (int*)realloc(matrix[y], sizeof(int)*(x+1));
+			matrix[y][x] = -3;
+			// printf("%c ", '#');
+			x++;
+			break;
 		}
 	}
-	//printf("\nEnd of biggest loop\n");
-	
+
 	for(i=0;i<max_rows;i++){
-		//printf("\nIn smallest loop\n");
-	    matrix[i] = (int*)realloc(matrix[i], sizeof(int)*max_columns);
-		//printf("\nReallocated smth\n");
-	    for(j=0;j<max_columns;j++){
-	        if(matrix[i][j]!=-1&&matrix[i][j]!=-2&&matrix[i][j]!=-3){
-	            matrix[i][j]=0; 
-	        }
-	    }
+		matrix[i] = (int*)realloc(matrix[i], sizeof(int)*max_columns);
+		for(j=0;j<max_columns;j++){
+			if(matrix[i][j]!=-1 &&matrix[i][j] != -2 && matrix[i][j] != -3){
+				matrix[i][j]=0;
+			}
+		}
 	}
-	//printf("\nEnd of smallest loop\n");
-	
+
 	*columns = max_columns;
 	*rows = max_rows;
 
-    fclose(ptr);
+	fclose(ptr);
 
 	return matrix;
 }
@@ -354,6 +354,31 @@ int **solve_mazeFromfile(char * pathOriginalMaze, int* lines, int*columns){
 	int **maze;
 	maze = read_text_file_to_matrix(pathOriginalMaze,lines,columns);
 	solve_maze(maze,*lines,*columns);
+	FILE*ptr = fopen(pathOriginalMaze, "w");
+
+	for(int i = 0; i < (*lines); i++){//prints maze in .txt file
+		for(int j = 0; j < (*columns); j++){
+			switch(maze[i][j]){
+				case -3: 
+					fprintf(ptr, "#");
+					break;
+				case -2: 
+					fprintf(ptr, "F");
+					break;
+				case -1: 
+					fprintf(ptr, "I");
+					break;
+				case 1: 
+					fprintf(ptr, ".");
+					break;
+				case 0: 
+					fprintf(ptr, " ");
+					break;
+			}
+		}	
+		fprintf(ptr, "\n");	
+	}
+	fclose(ptr);
 	
 	return maze;
 }
@@ -426,5 +451,12 @@ void create_gen_maze_file(char* filename, int**genMaze,  int genMazeRows, int ge
 	}
 	fclose(maze);
 
+}
 
+void free_matrix(int**matrix, int rows){
+    int i;
+    for(i=0;i<rows;i++){
+        free(matrix[i]);
+    }
+    free(matrix);
 }
